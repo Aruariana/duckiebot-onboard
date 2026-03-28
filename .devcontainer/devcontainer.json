@@ -1,0 +1,43 @@
+{
+    "name": "Duckietown Project Onboard Dev",
+    
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": "..",
+        "args": {
+            "ARCH": "amd64",
+            "REPO_NAME": "duckiebot-onboard" 
+        }
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-iot.vscode-ros",
+                "ms-python.vscode-pylance",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "python.autoComplete.extraPaths": [
+                    "/opt/ros/noetic/lib/python3/dist-packages",
+                    "/code/catkin_ws/src/dt-ros-commons/packages",
+                    "/code/catkin_ws/src/duckiebot-onboard/packages"
+                ],
+                "python.analysis.extraPaths": [
+                    "/opt/ros/noetic/lib/python3/dist-packages",
+                    "/code/catkin_ws/src/dt-ros-commons/packages",
+                    "/code/catkin_ws/src/duckiebot-onbobard/packages"
+                ]
+            }
+        }
+    },
+
+    "runArgs": [
+        "--net=host",
+        "--privileged"
+    ],
+
+    "overrideCommand": true, 
+    "remoteUser": "root"
+}
