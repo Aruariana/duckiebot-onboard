@@ -1,0 +1,12 @@
+<launch>
+    <arg name="veh" doc="Name of vehicle. ex: megaman"/>
+    <arg name="param_file_name" default="default" doc="Specify a param file. ex: experiment_1."/>
+
+    <group ns="$(arg veh)">
+        <!-- robot_localization EKF -->
+        <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" output="screen" required="true" clear_params="true">
+            <remap from="odometry/filtered" to="odom" />
+            <rosparam command="load" subst_value="true" file="$(find ekf_localization)/config/ekf_localization_node/$(arg param_file_name).yaml" />
+        </node>
+    </group>
+</launch>

@@ -55,6 +55,7 @@ class DeadReckoningNode(DTROS):
         self.origin_frame = rospy.get_param("~origin_frame").replace("~", self.veh)
         self.target_frame = rospy.get_param("~target_frame").replace("~", self.veh)
         self.debug = rospy.get_param("~debug", False)
+        self.publish_tf = rospy.get_param("~publish_tf", True)
 
         self.left_encoder_last = None
         self.right_encoder_last = None
@@ -214,15 +215,16 @@ class DeadReckoningNode(DTROS):
 
         self.pub.publish(odom)
 
-        self._tf_broadcaster.sendTransform(
-            TransformStamped(
-                header=odom.header,
-                child_frame_id=self.target_frame,
-                transform=Transform(
-                    translation=Vector3(self.x, self.y, self.z), rotation=Quaternion(*self.q)
-                ),
+        if self.publish_tf:
+            self._tf_broadcaster.sendTransform(
+                TransformStamped(
+                    header=odom.header,
+                    child_frame_id=self.target_frame,
+                    transform=Transform(
+                        translation=Vector3(self.x, self.y, self.z), rotation=Quaternion(*self.q)
+                    ),
+                )
             )
-        )
         
         # Publish path for Rviz visualization
         self.path.header = odom.header

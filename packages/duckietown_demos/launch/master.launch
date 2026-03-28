@@ -65,6 +65,7 @@
 
     <arg name="/localization" default="false"/>
     <arg name="/localization/deadreckoning" default="false"/>
+    <arg name="/localization/ekf_localization" default="false"/>
     <arg name="/localization/apriltag_localization" default="false"/>
 
     <arg name="parallel_autonomy" default="false"/>
@@ -285,6 +286,20 @@
             <!-- Deadreckoning node -->
             <include file="$(find deadreckoning)/launch/deadreckoning_node.launch">
                 <arg name="veh" value="$(arg veh)"/>
+            </include>
+        </group>
+
+        <group if="$(arg /localization/ekf_localization)">
+            <!-- Wheel odometry source for EKF (disable TF; EKF will publish TF) -->
+            <include file="$(find deadreckoning)/launch/deadreckoning_node.launch">
+                <arg name="veh" value="$(arg veh)"/>
+                <arg name="publish_tf" value="false"/>
+            </include>
+
+            <!-- EKF fusion (wheel odometry + IMU yaw rate) -->
+            <include file="$(find ekf_localization)/launch/ekf_localization_node.launch">
+                <arg name="veh" value="$(arg veh)"/>
+                <arg name="param_file_name" value="$(arg param_file_name)"/>
             </include>
         </group>
 

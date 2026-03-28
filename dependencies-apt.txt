@@ -1,1 +1,4 @@
 # LIST YOUR APT PACKAGES HERE
+
+# EKF sensor fusion
+ros-noetic-robot-localization
