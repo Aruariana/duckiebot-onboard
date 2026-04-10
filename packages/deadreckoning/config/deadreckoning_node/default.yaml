@@ -14,10 +14,10 @@ ticks_per_meter: 656
 wheelbase: 0.1
 
 # origin reference frame name
-origin_frame: "~/odom"
+origin_frame: "$(arg veh)/odom"
 
 # target reference frame name
-target_frame: "~/base_footprint"
+target_frame: "$(arg veh)/footprint"
 
 # Whether this node should publish the TF transform origin_frame -> target_frame.
 # When using robot_localization EKF, set this to false to avoid duplicate TF publishers.

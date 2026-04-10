@@ -12,7 +12,7 @@ two_d_mode: true
 # Frames (match deadreckoning defaults)
 map_frame: "$(arg veh)/map"            # unused unless world_frame is set to map
 odom_frame: "$(arg veh)/odom"
-base_link_frame: "$(arg veh)/base_footprint"
+base_link_frame: "$(arg veh)/footprint"
 world_frame: "$(arg veh)/odom"
 
 publish_tf: true
