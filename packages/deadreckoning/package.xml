@@ -5,7 +5,7 @@
   <description>The deadreckoning meta package</description>
 
   <license>GPLv3</license>
-<maintainer email="mwalter@ttic.edu">Matthew R. Walter</maintainer>
+  <maintainer email="mwalter@ttic.edu">Matthew R. Walter</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
   <!-- <build_depend>duckietown_msgs</build_depend> -->

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package>
+  <name>ekf_localization</name>
+  <version>1.0.0</version>
+  <description>EKF-based localization for Duckiebot using robot_localization (wheel odometry + IMU yaw).</description>
+
+  <license>GPLv3</license>
+  <maintainer email="omerkayracetin@gmail.com">Omer Kayra Cetin</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>robot_localization</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>robot_localization</run_depend>
+
+  <!-- Message packages used by the configured topics -->
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>tf2_ros</run_depend>
+
+</package>

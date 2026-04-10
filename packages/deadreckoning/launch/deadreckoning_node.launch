@@ -3,6 +3,7 @@
     <arg name="pkg_name" value="deadreckoning"/>
     <arg name="node_name" default="deadreckoning_node"/>
     <arg name="param_file_name" default="default" doc="Specify a param file. ex: experiment_1."/>
+    <arg name="publish_tf" default="true" doc="Whether deadreckoning should publish TF (disable when EKF publishes TF)."/>
 
 
     <group ns="$(arg veh)">
@@ -10,6 +11,7 @@
         <remap from="deadreckoning_node/right_wheel" to="right_wheel_encoder_node/tick"/>
         <node name="$(arg node_name)" pkg="$(arg pkg_name)" type="$(arg node_name).py" output="screen" required="true">
             <param name="veh" value="$(arg veh)" />
+            <param name="publish_tf" value="$(arg publish_tf)" />
             <rosparam command="load"
                 file="$(find deadreckoning)/config/$(arg node_name)/$(arg param_file_name).yaml"/>
         </node>
