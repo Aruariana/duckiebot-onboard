@@ -212,6 +212,22 @@ class DeadReckoningNode(DTROS):
         odom.pose.pose = Pose(Point(self.x, self.y, self.z), Quaternion(*self.q))
         odom.child_frame_id = self.target_frame
         odom.twist.twist = Twist(Vector3(self.tv, 0.0, 0.0), Vector3(0.0, 0.0, self.rv))
+        
+        # 1. Pose Covariance (X, Y, Yaw)
+        pose_cov = [0.0] * 36
+        pose_cov[0] = 0.01   # X variance
+        pose_cov[7] = 0.01   # Y variance
+        pose_cov[35] = 0.05  # Yaw variance
+        odom.pose.covariance = pose_cov
+
+        # 2. Twist Covariance (Forward speed, Turning speed)
+        twist_cov = [0.0] * 36
+        twist_cov[0] = 0.01  # vx (Forward speed) variance
+        twist_cov[7] = 0.01  # vy (Lateral speed) variance
+        twist_cov[35] = 0.05 # vyaw (Turning speed) variance
+        odom.twist.covariance = twist_cov
+
+        self.pub.publish(odom)
 
         self.pub.publish(odom)
 

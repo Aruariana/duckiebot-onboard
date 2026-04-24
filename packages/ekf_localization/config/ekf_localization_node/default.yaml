@@ -5,18 +5,36 @@
 # - Wheel odometry provides x/y/yaw + vx + vyaw
 # - IMU is used ONLY for yaw changes (yaw rate)
 
-frequency: 30.0
+frequency: 10.0
 sensor_timeout: 0.2
 two_d_mode: true
 
-# Frames (match deadreckoning defaults)
-map_frame: "$(arg veh)/map"            # unused unless world_frame is set to map
+# Frames
+map_frame: "$(arg veh)/map" 
 odom_frame: "$(arg veh)/odom"
 base_link_frame: "$(arg veh)/footprint"
-world_frame: "$(arg veh)/odom"
+world_frame: "$(arg veh)/map"
+
+# Enable history to handle delayed image processing
+permit_lagged_data: true
+history_length: 1.5 # Keep 1.5 seconds of history
 
 publish_tf: true
 publish_acceleration: false
+
+# Apriltag localization (absolute pose)
+pose0: "apriltag_localization_node/pose"
+pose0_queue_size: 10
+pose0_nodelay: true
+pose0_differential: false
+pose0_relative: false
+
+# Trust the apriltag localization for x/y/yaw
+pose0_config: [true,  true,  false,
+               false, false, true,
+               false, false, false,
+               false, false, false,
+               false, false, false]
 
 # Wheel odometry (deadreckoning)
 odom0: "deadreckoning_node/odom"
@@ -33,7 +51,7 @@ odom0_relative: true
 odom0_config: [false,  false,  false,
                false, false, false,
                true,  false, false,
-               false, false, false,
+               false, false, true,
                false, false, false]
 
 # IMU (yaw changes only)
