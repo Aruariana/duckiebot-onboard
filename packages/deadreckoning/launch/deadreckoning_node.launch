@@ -12,7 +12,7 @@
         <node name="$(arg node_name)" pkg="$(arg pkg_name)" type="$(arg node_name).py" output="screen" required="true">
             <param name="veh" value="$(arg veh)" />
             <param name="publish_tf" value="$(arg publish_tf)" />
-            <rosparam command="load"
+            <rosparam command="load" subst_value="true"
                 file="$(find deadreckoning)/config/$(arg node_name)/$(arg param_file_name).yaml"/>
         </node>
     </group>

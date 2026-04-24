@@ -293,7 +293,7 @@
             <!-- Wheel odometry source for EKF (disable TF; EKF will publish TF) -->
             <include file="$(find deadreckoning)/launch/deadreckoning_node.launch">
                 <arg name="veh" value="$(arg veh)"/>
-                <arg name="publish_tf" value="false"/>
+                <arg name="publish_tf" value="true"/>
             </include>
 
             <!-- EKF fusion (wheel odometry + IMU yaw rate) -->
