@@ -66,6 +66,7 @@
     <arg name="/localization" default="false"/>
     <arg name="/localization/deadreckoning" default="false"/>
     <arg name="/localization/apriltag_localization" default="false"/>
+    <arg name="/localization/map_odom_corrector" default="false"/>
 
     <arg name="parallel_autonomy" default="false"/>
 
@@ -285,16 +286,26 @@
             <!-- Deadreckoning node -->
             <include file="$(find deadreckoning)/launch/deadreckoning_node.launch">
                 <arg name="veh" value="$(arg veh)"/>
+                <arg name="publish_tf" value="true"/>
             </include>
         </group>
 
         <!-- Localization node -->
+        <!--
         <group if="$(arg /localization/apriltag_localization)">
             <remap from="localization_node/detections" to="apriltag_detector_node/detections" />
             <include file="$(find autolab)/launch/localization.launch">
                 <arg name="veh" value="$(arg veh)"/>
                 <arg name="robot_type" value="$(arg robot_type)"/>
                 <arg name="robot_configuration" value="$(arg robot_configuration)"/>
+            </include>
+        </group>
+        -->
+
+        <!-- Map Odometry Corrector node -->
+        <group if="$(arg /localization/map_odom_corrector)">
+            <include file="$(find map_odom_corrector)/launch/map_odom_corrector_node.launch">
+                <arg name="veh" value="$(arg veh)"/>
             </include>
         </group>
     </group>
