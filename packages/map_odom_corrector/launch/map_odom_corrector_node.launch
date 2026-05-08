@@ -9,6 +9,8 @@
         <remap from="$(arg node_name)/input_pose" to="apriltag_localization_node/pose"/>
         <node name="$(arg node_name)" pkg="$(arg pkg_name)" type="$(arg node_name).py" output="screen">
             <param name="veh" value="$(arg veh)" />
+            <rosparam command="load"
+                file="$(find map_odom_corrector)/config/$(arg node_name)/default.yaml"/>
         </node>
     </group>
 </launch>

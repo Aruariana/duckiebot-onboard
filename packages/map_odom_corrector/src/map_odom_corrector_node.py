@@ -19,8 +19,16 @@ class MapOdomCorrectorNode(DTROS):
             node_type=NodeType.LOCALIZATION
         )
 
+        # Get initial position parameters to set fixed starting position in the map frame
+        initial_x = rospy.get_param("~initial_x", 0.0)
+        initial_y = rospy.get_param("~initial_y", 0.0)
+        initial_yaw = rospy.get_param("~initial_yaw", 0.0)
+        
         # The offset matrix between the absolute map and the drifting odom frame.
-        self.map_T_odom = np.identity(4)
+        # Initialize with the fixed starting position
+        self.map_T_odom = self._create_transform(initial_x, initial_y, initial_yaw)
+        
+        self.loginfo(f"Initialized with fixed starting position: x={initial_x}, y={initial_y}, yaw={initial_yaw}")
         
         # A rolling buffer to store the last 3 seconds of wheel odometry with 10hz updates.
         # Stores tuples of: (timestamp_in_seconds, odom_T_footprint_matrix)
@@ -43,6 +51,12 @@ class MapOdomCorrectorNode(DTROS):
 
         # Use DTROS built-in logging methods instead of rospy.loginfo
         self.loginfo("Initialized. Publishing map -> odom TF...")
+
+    def _create_transform(self, x, y, yaw):
+        """Create a 4x4 homogeneous transformation matrix from position and yaw."""
+        t = tr.translation_matrix((x, y, 0.0))
+        R = tr.rotation_matrix(yaw, (0, 0, 1))  # Rotation around z-axis
+        return tr.concatenate_matrices(t, R)
 
     def cb_tag_pose(self, msg):
         """ When an AprilTag is seen, calculate the new drift offset. """

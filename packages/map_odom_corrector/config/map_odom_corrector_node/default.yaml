@@ -1,0 +1,10 @@
+# parameters for map_odom_corrector_node
+
+# Fixed starting position in the map frame (meters)
+initial_x: 0.22
+
+# Fixed starting position in the map frame (meters)
+initial_y: 1.48
+
+# Fixed starting orientation in the map frame (radians)
+initial_yaw: -1.5708
