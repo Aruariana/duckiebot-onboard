@@ -6,7 +6,7 @@ import tf2_ros
 import collections
 
 from nav_msgs.msg import Odometry, Path
-from geometry_msgs.msg import PoseStamped, TransformStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped, Pose2D
 
 # Import DTROS essentials
 from duckietown.dtros import DTROS, NodeType
@@ -40,6 +40,9 @@ class MapOdomCorrectorNode(DTROS):
         # Publisher for RViz visualization (shows the true map position)
         self.path_pub = rospy.Publisher("~true_path", Path, queue_size=1, latch=True)
         self.path = Path()
+
+        # Publisher for robot position (x, y, yaw) relative to map for mobile app
+        self.pose_pub = rospy.Publisher("~robot_pose", Pose2D, queue_size=1)
 
         # Setup subscribers
         self.sub_wheels = rospy.Subscriber(
@@ -145,8 +148,18 @@ class MapOdomCorrectorNode(DTROS):
         
         self.path.header.stamp = msg.header.stamp
         self.path.header.frame_id = map_frame
+        if len(self.path.poses) > 1000:
+            self.path.poses.pop(0) 
         self.path.poses.append(pose)
         self.path_pub.publish(self.path)
+
+        # 5. Publish robot pose (x, y, yaw) in map frame
+        yaw = tr.euler_from_quaternion(path_quat)[2]  # Extract yaw from quaternion
+        robot_pose = Pose2D()
+        robot_pose.x = path_trans[0]
+        robot_pose.y = path_trans[1]
+        robot_pose.theta = yaw
+        self.pose_pub.publish(robot_pose)
 
 if __name__ == "__main__":
     # Create the DTROS node
