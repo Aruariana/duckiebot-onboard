@@ -11,6 +11,7 @@
 
 		<!-- Map Odometry Corrector	-->
 		<arg name="/localization" value="true"/>
+		<arg name="localization_source" value="apriltag"/>
 		<arg name="/localization/deadreckoning" value="true"/>
 		<arg name="/localization/map_odom_corrector" value="true"/>
   	</include>

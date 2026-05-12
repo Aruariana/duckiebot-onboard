@@ -12,6 +12,7 @@
 	<arg name="camera_topic" default="camera_node"/>
 	<arg name="param_file_name" default="default" />
 	<arg name="apriltags_param_file_name" default="$(arg param_file_name)" />
+	<arg name="localization_source" default="apriltag" doc="Localization source for map_odom_corrector: 'apriltag' or 'aruco'"/>
 	<arg name="fsm_file_name" default="$(arg demo_name)" />
 	<arg name="verbose" default="false" />
 	<arg name="ai_trafo_mode" default="cb" doc="'cb' for colo balance only; 'both' for color balance and linear trafo"/>
@@ -306,6 +307,7 @@
         <group if="$(arg /localization/map_odom_corrector)">
             <include file="$(find map_odom_corrector)/launch/map_odom_corrector_node.launch">
                 <arg name="veh" value="$(arg veh)"/>
+                <arg name="localization_source" value="$(arg localization_source)"/>
             </include>
         </group>
     </group>

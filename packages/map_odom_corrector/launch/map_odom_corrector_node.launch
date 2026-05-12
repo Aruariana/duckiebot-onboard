@@ -3,10 +3,12 @@
     <arg name="veh" doc="Name of vehicle. ex: duckiebot01"/>
     <arg name="pkg_name" value="map_odom_corrector"/>
     <arg name="node_name" default="map_odom_corrector_node"/>
+    <arg name="localization_source" default="apriltag" doc="Localization source: 'apriltag' or 'aruco'"/>
 
     <group ns="$(arg veh)">
         <remap from="$(arg node_name)/input_odom" to="deadreckoning_node/odom"/>
-        <remap from="$(arg node_name)/input_pose" to="apriltag_localization_node/pose"/>
+        <remap if="$(eval arg('localization_source') == 'apriltag')" from="$(arg node_name)/input_pose" to="apriltag_localization_node/pose"/>
+        <remap if="$(eval arg('localization_source') == 'aruco')" from="$(arg node_name)/input_pose" to="aruco_localization_node/pose"/>
         <node name="$(arg node_name)" pkg="$(arg pkg_name)" type="$(arg node_name).py" output="screen">
             <param name="veh" value="$(arg veh)" />
             <rosparam command="load"
